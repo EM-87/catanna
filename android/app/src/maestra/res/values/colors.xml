@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- La maestra lleva el icono en negativo para no confundirla con la de cliente. -->
+    <color name="icono_fondo">@color/tinta</color>
+    <color name="icono_letra">@color/crema</color>
+</resources>

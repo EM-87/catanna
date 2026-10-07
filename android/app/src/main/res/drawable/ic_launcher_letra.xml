@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Una «C» gruesa con el punto rosa de las etiquetas. Lienzo de 108 con zona segura de 66. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:pathData="M67,41 A19,19 0 1,0 67,67"
+        android:strokeWidth="9"
+        android:strokeLineCap="round"
+        android:strokeColor="@color/icono_letra" />
+    <path
+        android:pathData="M68,54 m-5,0 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0"
+        android:fillColor="@color/rosa" />
+</vector>
