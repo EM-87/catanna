@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><link rel="stylesheet" href="_ds/organic-65ce437b-601c-4f2f-a223-07ce3dec2e37/styles.css"><link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+body{margin:0;background:#e4e0d8;font-family:Figtree,system-ui,sans-serif}
+a{color:#1b1b1b;text-decoration:none}a:hover{color:#5c5c5c}
+*{box-sizing:border-box}
+.tapa{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .12s ease,opacity .12s ease}
+.tapa:active{transform:scale(.978);opacity:.9}
+.scrollx{overflow-x:auto;scrollbar-width:none}.scrollx::-webkit-scrollbar{display:none}
+.pane{overflow-y:auto;scrollbar-width:none}.pane::-webkit-scrollbar{display:none}
+textarea{font-family:inherit}
+</style></helmet>
+
+<div style="min-height:100vh;background:#e4e0d8;display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;padding:22px 16px 40px;gap:18px 28px">
+<div style="flex-basis:100%;display:flex;justify-content:center;gap:28px;flex-wrap:wrap;font-size:12px;font-weight:700;color:#7d766c;text-align:center">{{ pista }}</div>
+
+<div style="width:390px;height:844px;background:#fdf8f0;color:#1b1b1b;border-radius:34px;overflow:hidden;position:relative;box-shadow:0 12px 40px rgba(27,27,27,.22);display:flex;flex-direction:column;flex:none">
+
+<sc-if value="{{ esMovil }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1;display:flex;flex-direction:column;min-height:0">
+
+<div style="padding:13px 18px 11px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eee3d0;background:#fdf8f0;flex:none">
+<div onClick="{{ irAtras }}" class="tapa" style="width:32px;height:32px;border-radius:999px;background:#f4ead6;display:grid;place-items:center;font-size:17px;line-height:1">{{ iconoAtras }}</div>
+<img src="assets/logo-catanna.png" alt="Catanna" style="height:17px;display:block">
+<div onClick="{{ verTicket }}" class="tapa" title="Escanear ticket" style="width:32px;height:32px;border-radius:999px;background:#f4ead6;display:grid;place-items:center;font-size:15px">⌗</div>
+</div>
+
+<div class="pane" style="flex:1;min-height:0">
+
+<sc-if value="{{ vDescubrir }}" hint-placeholder-val="{{ true }}">
+<div style="padding:16px 18px 0">
+<div style="font-size:11px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:#8d8578;margin-bottom:9px">Molécula</div>
+<div class="scrollx" style="display:flex;gap:7px;padding-bottom:2px">
+<sc-for list="{{ chipsMol }}" as="c" hint-placeholder-count="5">
+<span onClick="{{ c.on }}" class="tapa" style="{{ c.css }}">{{ c.label }}</span>
+</sc-for>
+</div>
+<div class="scrollx" style="display:flex;gap:7px;margin-top:8px;padding-bottom:2px">
+<sc-for list="{{ chipsTipo }}" as="c" hint-placeholder-count="5">
+<span onClick="{{ c.on }}" class="tapa" style="{{ c.css }}">{{ c.label }}</span>
+</sc-for>
+</div>
+</div>
+
+<sc-if value="{{ hayDestacado }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ destacado.on }}" class="tapa" style="margin:18px 18px 0;border-radius:20px;overflow:hidden;background:#fff;border:1px solid #eee3d0">
+<div style="height:180px;position:relative;background:#f4ead6">
+<img src="{{ destacado.foto }}" alt="{{ destacado.nombre }}" style="height:100%;width:100%;object-fit:cover;display:block">
+<div style="position:absolute;top:12px;left:12px;font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;padding:6px 12px;border-radius:999px;background:#1b1b1b;color:#fff">Lo mejor valorado</div>
+</div>
+<div style="padding:15px 17px 17px">
+<div style="font-size:25px;font-weight:900;line-height:1.05;letter-spacing:-.015em">{{ destacado.nombre }}</div>
+<div style="font-size:12.5px;color:#8d8578;margin-top:5px;font-weight:600">{{ destacado.sub }}</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:11px">
+<sc-for list="{{ destacado.tags }}" as="t" hint-placeholder-count="3">
+<span style="{{ t.css }}">{{ t.txt }}</span>
+</sc-for>
+</div>
+<div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:14px">
+<span style="font-size:12px;color:#8d8578;font-weight:600"><strong style="font-size:19px;font-weight:900;color:#1b1b1b">{{ destacado.nota }}</strong> · {{ destacado.nNotas }}</span>
+<span style="font-size:13px;font-weight:800;padding:9px 18px;border-radius:999px;background:#f4c3d4">Ver ficha</span>
+</div>
+</div>
+</div>
+</sc-if>
+
+<div style="padding:22px 18px 0">
+<div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:11px">
+<div style="font-size:11px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:#8d8578">{{ tituloLista }}</div>
+<div style="font-size:11.5px;color:#8d8578;font-weight:600">{{ nResultados }}</div>
+</div>
+<div style="display:grid;gap:9px">
+<sc-for list="{{ lista }}" as="p" hint-placeholder-count="4">
+<div onClick="{{ p.on }}" class="tapa" style="display:flex;align-items:center;gap:13px;padding:11px 13px;background:#fffdf9;border:1px solid #eee3d0;border-radius:18px">
+<div style="width:58px;height:58px;border-radius:14px;overflow:hidden;background:#f4ead6;flex:none">
+<img src="{{ p.foto }}" alt="{{ p.nombre }}" style="height:100%;width:100%;object-fit:cover;display:block">
+</div>
+<div style="flex:1;min-width:0">
+<div style="font-size:15px;font-weight:800;line-height:1.2">{{ p.nombre }}</div>
+<div style="font-size:11.5px;color:#8d8578;margin-top:3px;font-weight:600">{{ p.sub }}</div>
+<div style="font-size:11.5px;color:#7a6a44;margin-top:4px;font-weight:700">{{ p.notas }}</div>
+</div>
+<div style="text-align:right;flex:none">
+<div style="font-size:16px;font-weight:900">{{ p.nota }}</div>
+<div style="font-size:11px;font-weight:700;color:#8d8578;margin-top:2px">{{ p.nNotas }}</div>
+</div>
+</div>
+</sc-for>
+</div>
+<sc-if value="{{ listaVacia }}" hint-placeholder-val="{{ false }}">
+<div style="padding:26px 8px;text-align:center;font-size:13.5px;color:#8d8578;line-height:1.55">Nada con esos filtros. Prueba otra molécula.</div>
+</sc-if>
+</div>
+
+<sc-if value="{{ hayPendiente }}" hint-placeholder-val="{{ true }}">
+<div onClick="{{ pendiente.on }}" class="tapa" style="margin:20px 18px 0;padding:14px 16px;border-radius:18px;background:#e3ecdf;display:flex;align-items:center;gap:12px">
+<div style="width:36px;height:36px;border-radius:999px;background:#3d5c42;color:#fff;display:grid;place-items:center;font-size:15px;flex:none">★</div>
+<div style="font-size:13px;line-height:1.45;color:#2f4a35">Compraste <strong style="font-weight:900">{{ pendiente.nombre }}</strong>. ¿Qué tal fue?</div>
+</div>
+</sc-if>
+<div style="height:22px"></div>
+</sc-if>
+
+<sc-if value="{{ vCarta }}" hint-placeholder-val="{{ false }}">
+<div style="padding:18px 18px 0">
+<div style="font-size:26px;font-weight:900;letter-spacing:-.02em">Carta completa</div>
+<div style="font-size:13px;color:#8d8578;margin-top:6px;font-weight:600">{{ nTotal }} referencias organizadas por molécula, como en la carta de la tienda.</div>
+</div>
+<sc-for list="{{ carta }}" as="g" hint-placeholder-count="4">
+<div style="padding:20px 18px 0">
+<div style="display:flex;align-items:center;gap:10px;padding:9px 15px;border-radius:12px;background:{{ g.bg }}">
+<span style="font-size:17px;font-weight:900;letter-spacing:-.01em">{{ g.mol }}</span>
+<span style="font-size:11px;font-weight:700;color:#5f5a52">{{ g.resumen }}</span>
+</div>
+<div style="display:grid;gap:2px;padding:8px 4px 0">
+<sc-for list="{{ g.items }}" as="p" hint-placeholder-count="4">
+<div onClick="{{ p.on }}" class="tapa" style="display:flex;align-items:center;gap:10px;padding:10px 8px;border-bottom:1px dotted #e2d7c0">
+<span style="flex:1;font-size:14.5px;font-weight:700">{{ p.nombre }}</span>
+<span style="font-size:11.5px;color:#8d8578;font-weight:600">{{ p.tipo }}</span>
+<span style="font-size:14.5px;font-weight:900;width:56px;text-align:right">{{ p.nota }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+<div style="height:22px"></div>
+</sc-if>
+
+<sc-if value="{{ vFicha }}" hint-placeholder-val="{{ false }}">
+<div style="margin:14px 18px 0;height:230px;border-radius:20px;overflow:hidden;background:#f4ead6;position:relative">
+<img src="{{ f.foto }}" alt="{{ f.nombre }}" style="height:100%;width:100%;object-fit:cover;display:block">
+</div>
+
+<div style="padding:19px 18px 0">
+<div style="font-size:31px;font-weight:900;line-height:1.02;letter-spacing:-.02em">{{ f.nombre }}</div>
+<div style="display:flex;gap:6px;margin-top:11px;flex-wrap:wrap">
+<span style="font-size:12px;font-weight:800;padding:5px 12px;border-radius:999px;background:#1b1b1b;color:#fff">{{ f.molecula }}</span>
+<span style="font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:#e3ecdf;color:#3d5c42">{{ f.tipo }}</span>
+<span style="font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:#f4ead6;color:#6b6154">{{ f.detalle }}</span>
+</div>
+</div>
+
+<div style="margin:19px 18px 0;padding:17px 19px;background:#1b1b1b;border-radius:20px;color:#fdf8f0">
+<div style="display:flex;justify-content:space-between;align-items:baseline">
+<div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#9d968c">Potencia percibida</div>
+<div style="font-size:23px;font-weight:900">{{ f.potencia }}<span style="font-size:13px;color:#9d968c;font-weight:700"> /5</span></div>
+</div>
+<div style="height:10px;border-radius:999px;background:rgba(253,248,240,.14);margin:12px 0 7px;position:relative;overflow:hidden">
+<div style="position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:#f4c3d4;width:{{ f.potenciaPct }}"></div>
+</div>
+<div style="display:flex;justify-content:space-between;font-size:11.5px;color:#9d968c;font-weight:600"><span>{{ f.nNotas }}</span><span>en bolsa: {{ f.declarada }}</span></div>
+</div>
+
+<div style="padding:23px 18px 0">
+<div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#8d8578;margin-bottom:11px">Lo que dicen los clientes</div>
+<sc-if value="{{ f.hayTags }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-wrap:wrap;gap:7px">
+<sc-for list="{{ f.tags }}" as="t" hint-placeholder-count="4">
+<span onClick="{{ t.on }}" class="tapa" style="{{ t.css }}">{{ t.label }} <span style="opacity:.6">{{ t.n }}</span></span>
+</sc-for>
+</div>
+<div style="font-size:12px;color:#8d8578;margin-top:10px;font-weight:600">Toca una etiqueta y verás de qué frases sale.</div>
+</sc-if>
+<sc-if value="{{ f.sinTags }}" hint-placeholder-val="{{ false }}">
+<div style="padding:14px 16px;border-radius:16px;border:1.5px dashed #dfd2ba;font-size:13px;color:#8d8578;line-height:1.5">Sin etiquetas todavía. Aparecen cuando cuatro clientes coinciden en la misma nota.</div>
+</sc-if>
+<sc-if value="{{ f.hayCamino }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:10px;padding:11px 14px;border-radius:14px;background:#f4ead6;font-size:12.5px;color:#7a6a44;font-weight:700">{{ f.camino }}</div>
+</sc-if>
+</div>
+
+<div style="padding:23px 18px 0">
+<div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#8d8578;margin-bottom:10px">Formatos en tienda</div>
+<div style="display:grid;gap:8px">
+<sc-for list="{{ f.sizes }}" as="s" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 17px;border-radius:18px;border:1.5px solid #e6dcc9;background:#fffdf9">
+<span style="font-size:15px;font-weight:800">{{ s.g }}</span>
+<div style="display:flex;align-items:baseline;gap:9px">
+<span style="font-size:11.5px;color:#8d8578;font-weight:600">{{ s.porGramo }}</span>
+<span style="font-size:17px;font-weight:900">{{ s.precio }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+<div style="font-size:12px;color:#8d8578;margin-top:9px;font-weight:600">Precios orientativos. Se compra en la tienda.</div>
+</div>
+
+<sc-if value="{{ f.hayResenas }}" hint-placeholder-val="{{ false }}">
+<div style="padding:23px 18px 0">
+<div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#8d8578;margin-bottom:11px">Últimas valoraciones</div>
+<div style="display:grid;gap:9px">
+<sc-for list="{{ f.resenas }}" as="r" hint-placeholder-count="2">
+<div style="padding:14px 16px;background:#fffdf9;border:1px solid #eee3d0;border-radius:18px">
+<div style="font-size:14px;line-height:1.5">{{ r.texto }}</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:9px">
+<span style="font-size:11.5px;color:#8d8578;font-weight:600">{{ r.pie }}</span>
+<span style="font-size:12px;color:#8f3a56;font-weight:800">{{ r.estrellas }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<div onClick="{{ f.onValorar }}" class="tapa" style="margin:20px 18px 0;padding:14px 16px;border-radius:18px;background:#e3ecdf;font-size:13px;font-weight:700;color:#2f4a35;line-height:1.45">{{ f.txtValorar }}</div>
+<div style="height:22px"></div>
+</sc-if>
+
+<sc-if value="{{ vEtiqueta }}" hint-placeholder-val="{{ false }}">
+<div style="margin:16px 18px 0;padding:19px 20px;border-radius:20px;background:{{ e.bg }}">
+<div style="font-size:30px;font-weight:900;line-height:1;color:{{ e.color }}">{{ e.label }}</div>
+<div style="display:flex;align-items:flex-end;gap:5px;height:48px;margin-top:18px">
+<sc-for list="{{ e.barras }}" as="b" hint-placeholder-count="5">
+<div style="{{ b.css }}"></div>
+</sc-for>
+</div>
+<div style="font-size:12.5px;margin-top:11px;line-height:1.5;color:{{ e.color }}">{{ e.resumen }}</div>
+</div>
+
+<div style="padding:22px 18px 0">
+<div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#8d8578;margin-bottom:11px">De estas frases sale</div>
+<div style="display:grid;gap:9px">
+<sc-for list="{{ e.frases }}" as="r" hint-placeholder-count="3">
+<div style="padding:14px 16px;background:#fffdf9;border:1px solid #eee3d0;border-radius:18px;font-size:14px;line-height:1.5">{{ r.texto }} <span style="color:#8d8578;font-size:11.5px;font-weight:600">{{ r.alias }}</span></div>
+</sc-for>
+</div>
+</div>
+
+<sc-if value="{{ e.hayOtras }}" hint-placeholder-val="{{ false }}">
+<div style="padding:22px 18px 0">
+<div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#8d8578;margin-bottom:11px">Otras con esta nota</div>
+<div style="display:grid;gap:8px">
+<sc-for list="{{ e.otras }}" as="p" hint-placeholder-count="3">
+<div onClick="{{ p.on }}" class="tapa" style="display:flex;align-items:center;gap:12px;padding:11px 13px;background:#fffdf9;border:1px solid #eee3d0;border-radius:18px">
+<div style="width:44px;height:44px;border-radius:12px;overflow:hidden;background:#f4ead6;flex:none"><img src="{{ p.foto }}" alt="{{ p.nombre }}" style="height:100%;width:100%;object-fit:cover;display:block"></div>
+<div style="flex:1"><div style="font-size:14.5px;font-weight:800">{{ p.nombre }}</div><div style="font-size:11.5px;color:#8d8578;margin-top:2px;font-weight:600">{{ p.sub }}</div></div>
+<div style="font-size:12.5px;font-weight:800">{{ p.nota }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<div style="margin:20px 18px 0;padding:14px 16px;border-radius:18px;background:#f4ead6;font-size:12.5px;line-height:1.5;color:#7a6a44;font-weight:600">{{ e.pie }}</div>
+<div style="height:22px"></div>
+</sc-if>
+
+<sc-if value="{{ vValorar }}" hint-placeholder-val="{{ false }}">
+<div style="margin:16px 18px 0;padding:13px 15px;background:#e3ecdf;border-radius:18px;display:flex;align-items:center;gap:12px">
+<div style="width:34px;height:34px;border-radius:999px;background:#3d5c42;color:#fff;display:grid;place-items:center;font-size:15px;flex:none">✓</div>
+<div style="font-size:12.5px;line-height:1.45;color:#2f4a35;font-weight:600">{{ v.aviso }}</div>
+</div>
+
+<div style="padding:18px 18px 0;display:flex;gap:13px;align-items:center">
+<div style="width:60px;height:60px;border-radius:16px;overflow:hidden;background:#f4ead6;flex:none"><img src="{{ v.foto }}" alt="{{ v.nombre }}" style="height:100%;width:100%;object-fit:cover;display:block"></div>
+<div><div style="font-size:21px;font-weight:900;line-height:1.1">{{ v.nombre }}</div><div style="font-size:12.5px;color:#8d8578;margin-top:3px;font-weight:600">{{ v.sub }}</div></div>
+</div>
+
+<div style="padding:24px 18px 0">
+<div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#8d8578;margin-bottom:9px">1 · En general</div>
+<div style="display:flex;gap:9px">
+<sc-for list="{{ v.estrellas }}" as="s" hint-placeholder-count="5">
+<span onClick="{{ s.on }}" class="tapa" style="font-size:33px;line-height:1;color:{{ s.color }}">★</span>
+</sc-for>
+</div>
+</div>
+
+<div style="padding:24px 18px 0">
+<div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#8d8578;margin-bottom:10px">2 · Potencia que has notado</div>
+<div style="display:flex;gap:8px">
+<sc-for list="{{ v.potencias }}" as="p" hint-placeholder-count="5">
+<div onClick="{{ p.on }}" class="tapa" style="{{ p.css }}">{{ p.n }}</div>
+</sc-for>
+</div>
+<div style="display:flex;justify-content:space-between;font-size:11.5px;color:#8d8578;margin-top:7px;font-weight:600"><span>suave</span><span>muy potente</span></div>
+</div>
+
+<div style="padding:24px 18px 0">
+<div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#8d8578;margin-bottom:10px">3 · A qué te ha recordado</div>
+<div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px">
+<sc-for list="{{ v.chips }}" as="c" hint-placeholder-count="8">
+<span onClick="{{ c.on }}" class="tapa" style="{{ c.css }}">{{ c.label }}</span>
+</sc-for>
+</div>
+<textarea onChange="{{ v.onTexto }}" placeholder="Cuéntalo con tus palabras. De aquí salen las etiquetas que ven los demás." style="width:100%;min-height:92px;padding:14px 16px;background:#fffdf9;border:1.5px solid #e6dcc9;border-radius:18px;font-size:14px;line-height:1.5;color:#1b1b1b;resize:none;outline:none">{{ v.texto }}</textarea>
+<sc-if value="{{ v.hayDetectadas }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:11px;padding:12px 15px;border-radius:16px;background:#e3ecdf">
+<div style="font-size:12.5px;color:#2f4a35;line-height:1.45;font-weight:600">{{ v.detectadas }}</div>
+</div>
+</sc-if>
+<sc-if value="{{ v.hayNegadas }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:9px;padding:12px 15px;border-radius:16px;background:#f4ead6">
+<div style="font-size:12.5px;color:#7a6a44;line-height:1.45;font-weight:600">{{ v.negadas }}</div>
+</div>
+</sc-if>
+</div>
+
+<div style="padding:22px 18px 24px">
+<div style="font-size:11.5px;color:#8d8578;text-align:center;margin-bottom:11px;font-weight:600">Aparecerás como <strong style="font-weight:800;color:#5c5c5c">M. R.</strong></div>
+<div onClick="{{ v.onPublicar }}" class="tapa" style="padding:15px;border-radius:999px;background:#1b1b1b;color:#fff;font-size:15px;font-weight:800;text-align:center">Publicar valoración</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ vProbados }}" hint-placeholder-val="{{ false }}">
+<div style="padding:18px 18px 0">
+<div style="font-size:26px;font-weight:900;letter-spacing:-.02em">Tus productos</div>
+<div style="font-size:13px;color:#8d8578;margin-top:6px;font-weight:600">Tickets escaneados y lo que has valorado.</div>
+</div>
+<div style="padding:20px 18px 0;display:grid;gap:9px">
+<sc-for list="{{ probados }}" as="p" hint-placeholder-count="3">
+<div onClick="{{ p.on }}" class="tapa" style="display:flex;align-items:center;gap:12px;padding:11px 13px;background:#fffdf9;border:1px solid #eee3d0;border-radius:18px">
+<div style="width:52px;height:52px;border-radius:13px;overflow:hidden;background:#f4ead6;flex:none"><img src="{{ p.foto }}" alt="{{ p.nombre }}" style="height:100%;width:100%;object-fit:cover;display:block"></div>
+<div style="flex:1"><div style="font-size:15px;font-weight:800">{{ p.nombre }}</div><div style="font-size:11.5px;color:#8d8578;margin-top:3px;font-weight:600">{{ p.sub }}</div></div>
+<div style="font-size:12px;font-weight:800;padding:7px 13px;border-radius:999px;background:{{ p.bg }};color:{{ p.color }};flex:none">{{ p.accion }}</div>
+</div>
+</sc-for>
+</div>
+<div style="height:22px"></div>
+</sc-if>
+
+</div>
+
+<sc-if value="{{ verNav }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;border-top:1px solid #eee3d0;background:#fffdf9;flex:none">
+<sc-for list="{{ nav }}" as="n" hint-placeholder-count="4">
+<div onClick="{{ n.on }}" class="tapa" style="flex:1;padding:11px 0 14px;text-align:center;color:{{ n.color }}">
+<div style="font-size:16px;line-height:1.2">{{ n.icono }}</div>
+<div style="font-size:10.5px;font-weight:800;margin-top:3px">{{ n.label }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+</div>
+</sc-if>
+
+</div>
+
+<div style="width:390px;height:844px;background:#fdf8f0;color:#1b1b1b;border-radius:34px;overflow:hidden;position:relative;box-shadow:0 12px 40px rgba(27,27,27,.22);display:flex;flex-direction:column;flex:none">
+
+<div style="padding:13px 18px 11px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eee3d0;background:#fdf8f0;flex:none">
+<div style="display:flex;align-items:center;gap:9px">
+<img src="assets/logo-catanna.png" alt="Catanna" style="height:17px;display:block">
+<span style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:#1b1b1b;color:#fff">Maestra</span>
+</div>
+<div style="width:32px;height:32px;border-radius:999px;background:#f4ead6;display:grid;place-items:center;font-size:12px;font-weight:800;color:#6b6154">JL</div>
+</div>
+
+<div class="pane" style="flex:1;min-height:0">
+
+<sc-if value="{{ pAlta }}" hint-placeholder-val="{{ true }}">
+<div style="padding:18px 18px 0">
+<div style="font-size:26px;font-weight:900;letter-spacing:-.02em">Nuevo producto</div>
+<div style="font-size:13px;color:#8d8578;margin-top:6px;font-weight:600;line-height:1.45">Cuatro campos y una foto. Las etiquetas las ponen los clientes.</div>
+</div>
+
+<div style="margin:18px 18px 0;height:150px;border-radius:20px;border:1.5px dashed #dfd2ba;background:#f4ead6;display:grid;place-items:center;font-size:12px;color:#8d8578;text-align:center;line-height:1.55;font-weight:700">Toca para hacer la foto<br>o elegirla de la galería</div>
+
+<div style="padding:18px 18px 0;display:grid;gap:14px">
+<div><div style="font-size:11px;font-weight:800;color:#6b6154;margin-bottom:7px">Nombre</div>
+<input value="{{ pa.nombre }}" onChange="{{ pa.onNombre }}" placeholder="Kush Mint" style="width:100%;padding:11px 16px;background:#fffdf9;border:1.5px solid #d8ccb6;border-radius:999px;font-size:14px;font-family:inherit;color:#1b1b1b;outline:none"></div>
+<div><div style="font-size:11px;font-weight:800;color:#6b6154;margin-bottom:7px">Distribuidor</div>
+<input value="{{ pa.distribuidor }}" onChange="{{ pa.onDistribuidor }}" placeholder="Elegir…" style="width:100%;padding:11px 16px;background:#fffdf9;border:1.5px solid #d8ccb6;border-radius:999px;font-size:14px;font-family:inherit;color:#1b1b1b;outline:none;border-color:#e6dcc9"></div>
+</div>
+
+<div style="padding:18px 18px 0"><div style="font-size:11px;font-weight:800;color:#6b6154;margin-bottom:7px">Molécula</div>
+<div style="display:flex;gap:7px;flex-wrap:wrap">
+<sc-for list="{{ pa.moleculas }}" as="m" hint-placeholder-count="5">
+<span onClick="{{ m.on }}" class="tapa" style="{{ m.css }}">{{ m.label }}</span>
+</sc-for>
+</div></div>
+
+<div style="padding:16px 18px 0"><div style="font-size:11px;font-weight:800;color:#6b6154;margin-bottom:7px">Formato</div>
+<div style="display:flex;gap:7px;flex-wrap:wrap">
+<sc-for list="{{ pa.tipos }}" as="t" hint-placeholder-count="4">
+<span onClick="{{ t.on }}" class="tapa" style="{{ t.css }}">{{ t.label }}</span>
+</sc-for>
+</div></div>
+
+<div style="padding:16px 18px 0"><div style="font-size:11px;font-weight:800;color:#6b6154;margin-bottom:7px">Tamaños y precio en tienda</div>
+<div style="display:grid;gap:8px">
+<sc-for list="{{ pa.filas }}" as="r" hint-placeholder-count="2">
+<div style="display:grid;grid-template-columns:56px 1fr;gap:10px;align-items:center">
+<span style="font-size:14px;font-weight:800">{{ r.g }}</span>
+<input value="{{ r.precio }}" onChange="{{ r.onPrecio }}" style="width:100%;padding:11px 16px;background:#fffdf9;border:1.5px solid #d8ccb6;border-radius:999px;font-size:14px;font-family:inherit;color:#1b1b1b;outline:none;padding:9px 14px;font-size:13.5px">
+</div>
+</sc-for>
+</div></div>
+
+<div style="padding:22px 18px 0">
+<div style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#8d8578;margin-bottom:10px">Así lo verá el cliente</div>
+<div style="display:flex;align-items:center;gap:13px;padding:11px 13px;background:#fffdf9;border:1px solid #eee3d0;border-radius:18px">
+<div style="width:58px;height:58px;border-radius:14px;background:#f4ead6;flex:none"></div>
+<div style="flex:1;min-width:0">
+<div style="font-size:15px;font-weight:800;line-height:1.2">{{ pa.previewNombre }}</div>
+<div style="font-size:11.5px;color:#8d8578;margin-top:3px;font-weight:600">{{ pa.previewSub }}</div>
+<div style="font-size:11.5px;color:#7a6a44;margin-top:4px;font-weight:700">sin etiquetas</div>
+</div>
+<div style="text-align:right;flex:none">
+<div style="font-size:16px;font-weight:900">—</div>
+<div style="font-size:11px;font-weight:700;color:#8d8578;margin-top:2px">0 valoraciones</div>
+</div>
+</div>
+</div>
+
+<div style="padding:20px 18px 24px;display:grid;gap:9px">
+<div onClick="{{ pa.onPublicar }}" class="tapa" style="padding:15px;border-radius:999px;background:#1b1b1b;color:#fff;font-size:15px;font-weight:800;text-align:center">Publicar en el catálogo</div>
+<div class="tapa" style="padding:14px;border-radius:999px;border:1.5px solid #d8ccb6;font-size:14px;font-weight:800;text-align:center;color:#6b6154">Guardar borrador</div>
+<sc-if value="{{ pa.hayEco }}" hint-placeholder-val="{{ false }}">
+<div style="padding:12px 15px;border-radius:16px;background:#e3ecdf;font-size:13px;color:#2f4a35;font-weight:700;line-height:1.45">{{ pa.eco }}</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ pCatalogo }}" hint-placeholder-val="{{ false }}">
+<div style="padding:18px 18px 0;display:flex;align-items:flex-end;justify-content:space-between;gap:12px">
+<div><div style="font-size:26px;font-weight:900;letter-spacing:-.02em">Catálogo</div>
+<div style="font-size:13px;color:#8d8578;margin-top:6px;font-weight:600">{{ pc.resumen }}</div></div>
+<div onClick="{{ pc.onNuevo }}" class="tapa" style="padding:10px 18px;border-radius:999px;background:#1b1b1b;color:#fff;font-size:13px;font-weight:800;flex:none">+ Nuevo</div>
+</div>
+<div style="padding:18px 18px 0;display:grid;gap:9px">
+<sc-for list="{{ pc.filas }}" as="r" hint-placeholder-count="6">
+<div style="padding:13px 15px;background:#fffdf9;border:1px solid #eee3d0;border-radius:18px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+<span style="font-size:15px;font-weight:800">{{ r.nombre }}</span>
+<span style="font-size:14px;font-weight:900;flex:none">{{ r.valoracion }}</span>
+</div>
+<div style="font-size:11.5px;color:#8d8578;margin-top:3px;font-weight:600"><span style="font-weight:800;color:#8f3a56">{{ r.molecula }}</span> · {{ r.tipo }} · {{ r.nNotas }} valoraciones</div>
+<div style="font-size:12px;color:#7a6a44;margin-top:6px;font-weight:700">{{ r.tags }}</div>
+</div>
+</sc-for>
+</div>
+<div style="height:22px"></div>
+</sc-if>
+
+<sc-if value="{{ pEtiquetas }}" hint-placeholder-val="{{ false }}">
+<div style="padding:18px 18px 0">
+<div style="font-size:26px;font-weight:900;letter-spacing:-.02em">Etiquetas</div>
+<div style="font-size:13px;color:#8d8578;margin-top:6px;font-weight:600;line-height:1.45">Una etiqueta se publica sola con cuatro clientes distintos. Las palabras que cuentan se editan aquí.</div>
+</div>
+<div style="padding:18px 18px 0;display:grid;gap:9px">
+<sc-for list="{{ pe.filas }}" as="t" hint-placeholder-count="6">
+<div style="padding:14px 16px;background:#fffdf9;border:1px solid #eee3d0;border-radius:18px">
+<div style="display:flex;align-items:baseline;justify-content:space-between">
+<span style="font-size:17px;font-weight:900">{{ t.label }}</span>
+<span style="font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;background:{{ t.bg }};color:{{ t.color }}">{{ t.estado }}</span>
+</div>
+<div style="font-size:12px;color:#8d8578;margin-top:7px;line-height:1.45;font-weight:600">{{ t.donde }}</div>
+<div style="font-size:11.5px;color:#7a6a44;margin-top:7px;line-height:1.5;font-weight:700">{{ t.sinonimos }}</div>
+</div>
+</sc-for>
+</div>
+<div style="height:22px"></div>
+</sc-if>
+
+</div>
+
+<div style="display:flex;border-top:1px solid #eee3d0;background:#fffdf9;flex:none">
+<sc-for list="{{ panelNav }}" as="n" hint-placeholder-count="3">
+<div onClick="{{ n.on }}" class="tapa" style="flex:1;padding:11px 0 14px;text-align:center;color:{{ n.color }}">
+<div style="font-size:16px;line-height:1.2">{{ n.icono }}</div>
+<div style="font-size:10.5px;font-weight:800;margin-top:3px">{{ n.label }}</div>
+</div>
+</sc-for>
+</div>
+
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1360,&quot;height&quot;:900},&quot;umbralTags&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:4,&quot;min&quot;:2,&quot;max&quot;:8,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Motor de etiquetas&quot;},&quot;mostrarPanel&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Demo&quot;}}">
+const SIN = {
+  citrico:['citric','limon','lima','naranja','pomelo','acido','mandarina'],
+  diesel:['diesel','gasolina','gasoil','combustible','queroseno'],
+  dulce:['dulce','azucar','caramelo','miel','golosina'],
+  terroso:['terroso','tierra','humedo','bosque','madera'],
+  pino:['pino','resinoso','conifera','eucalipto'],
+  menta:['menta','mentol','fresco','frescor','hierbabuena'],
+  frutal:['frutal','fruta','mango','platano','banana','uva','fresa','baya','melocoton'],
+  cremoso:['cremoso','crema','nata','vainilla','lacteo','mantequilla'],
+  especiado:['especiado','pimienta','canela','picante','clavo'],
+  floral:['floral','flor','lavanda','rosa','jazmin']
+};
+const NEG = ['no','nada','sin','poco','apenas','ningun','ninguna','tampoco','ni'];
+const PAL = {
+  citrico:['#e3ecdf','#3d5c42'], diesel:['#f9dde6','#8f3a56'], dulce:['#f9dde6','#8f3a56'],
+  terroso:['#f4ead6','#7a6a44'], pino:['#e4e2f0','#494379'], menta:['#e3ecdf','#3d5c42'],
+  frutal:['#f9dde6','#8f3a56'], cremoso:['#f4ead6','#7a6a44'], especiado:['#e4e2f0','#494379'], floral:['#f9dde6','#8f3a56']
+};
+const MOLBG = { OH10:'#f9dde6', THZ:'#e4e2f0', CBC:'#e3ecdf', FTS:'#dfe7f2', D10:'#f6e6cf' };
+const UMBRAL = 4;
+
+const norm = s => (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+
+function extrae(texto){
+  const t = norm(texto);
+  const pal = t.split(/[^a-z0-9]+/).filter(Boolean);
+  const si = [], no = [];
+  for (const tag in SIN){
+    let hit = -1;
+    for (const w of SIN[tag]){
+      const i = pal.findIndex(p => p.startsWith(w));
+      if (i >= 0 && (hit < 0 || i < hit)) hit = i;
+    }
+    if (hit < 0) continue;
+    const ventana = pal.slice(Math.max(0, hit - 4), hit);
+    (ventana.some(p => NEG.includes(p)) ? no : si).push(tag);
+  }
+  return { si, no };
+}
+
+const P = (id,nombre,molecula,tipo,detalle,foto,sizes,declarada,resenas) =>
+  ({ id, nombre, molecula, tipo, detalle, foto, sizes, declarada, resenas: resenas || [] });
+
+const R = (alias,texto,estrellas,potencia,fecha) => ({ alias, texto, estrellas, potencia, fecha });
+
+const PH = 'assets/p-static.png';
+
+const BASE = [
+  P('diesel','Diésel Dry','THZ','Resina','Dry triple filtrado','assets/p-diesel-dry.png',
+    [{g:'1 g',precio:7,stock:12,vending:false},{g:'2 g',precio:14,stock:8,vending:true},{g:'5 g',precio:30,stock:0,vending:false}],'alta',
+    [R('M. R.','Huele a gasolina de verdad, muy fuerte al abrir la bolsa, y luego queda un fondo a limón que no esperaba.',5,4,'12 ago'),
+     R('J. L.','Cítrica y terrosa a la vez. Potente, pero menos de lo que decía la bolsa.',4,4,'9 ago'),
+     R('A. G.','Al abrir me recordó a piel de naranja, muy fresca, con el diésel detrás.',5,4,'4 ago'),
+     R('P. S.','Notas cítricas claras, casi como lima. Nada dulce.',4,4,'28 jul'),
+     R('C. V.','Diésel puro y algo de tierra húmeda. Muy potente.',5,5,'21 jul')]),
+  P('royal','Royal Cream','THZ','Resina','Resina hash','assets/p-royal-cream.png',
+    [{g:'1 g',precio:8,stock:14,vending:true},{g:'2 g',precio:16,stock:9,vending:false},{g:'5 g',precio:35,stock:4,vending:false}],'media',
+    [R('L. M.','Muy cremosa, casi a nata. Dulce sin empachar.',5,3,'15 ago'),
+     R('T. B.','Sabe a vainilla y azúcar, la más dulce que he probado aquí.',5,3,'11 ago'),
+     R('R. O.','Cremosa y suave, con un fondo de mantequilla.',5,4,'6 ago'),
+     R('N. F.','Dulce, muy dulce. Y cremosa.',4,3,'30 jul'),
+     R('D. A.','Nata y caramelo. No tiene nada de cítrico.',5,3,'25 jul')]),
+  P('static','Static','FTS','Resina','Resina hash','assets/p-static.png',
+    [{g:'1 g',precio:8,stock:6,vending:true},{g:'2 g',precio:16,stock:11,vending:false},{g:'5 g',precio:35,stock:2,vending:false}],'alta',
+    [R('M. R.','Terrosa y con especias, pimienta clara al final.',4,4,'18 ago'),
+     R('G. P.','Muy especiada, canela casi. Potente.',5,5,'12 ago'),
+     R('S. C.','Tierra y madera, poco dulce.',4,4,'7 ago')]),
+  P('dorado','Dorado','FTS','Resina','Resina hash','assets/p-dorado.png',
+    [{g:'1 g',precio:7,stock:9,vending:false},{g:'2 g',precio:14,stock:5,vending:true}],'media',
+    [R('B. H.','Frutal, a melocotón, sorprendente.',5,3,'14 ago'),
+     R('E. Q.','Mango y algo floral. Suave.',4,3,'8 ago')]),
+  P('iceolator','Iceolator','CBC','Resina','Extracción, nueva fórmula','assets/p-iceolator.png',
+    [{g:'1 g',precio:10,stock:21,vending:true},{g:'2 g',precio:20,stock:14,vending:false},{g:'5 g',precio:45,stock:6,vending:false},{g:'10 g',precio:80,stock:2,vending:false}],'alta',
+    [R('F. T.','Muy limpia, fresca, un toque de menta al final.',5,4,'19 ago'),
+     R('I. R.','Mentolada y suave. Nada terrosa.',4,3,'13 ago'),
+     R('K. D.','Fresca, con frescor de eucalipto.',5,4,'5 ago')]),
+  P('zkittle','Zkittlez Dry','OH10','Resina','Dry sift 90 micras',PH,
+    [{g:'1 g',precio:8,stock:16,vending:true},{g:'2 g',precio:16,stock:10,vending:false},{g:'5 g',precio:35,stock:3,vending:false}],'media',
+    [R('V. N.','Dulce y afrutado, a fresa casi.',5,3,'17 ago'),
+     R('O. L.','Muy frutal, uva y baya.',5,3,'10 ago'),
+     R('H. M.','Dulce, tipo golosina.',4,3,'2 ago')]),
+  P('amnesia','Amnesia','OH10','Flor','Indoor',PH,
+    [{g:'2 g',precio:10,stock:0,vending:false},{g:'5 g',precio:30,stock:0,vending:false},{g:'10 g',precio:50,stock:0,vending:false}],'media',
+    [R('U. B.','Cítrica clarísima, limón puro.',5,4,'16 ago'),
+     R('Y. S.','Limón y algo de pino. Muy fresca.',5,4,'9 ago'),
+     R('Z. K.','Ácida y cítrica, la que más me gusta.',5,4,'1 ago')]),
+  P('lemon','Lemon','CBC','Flor','Indoor',PH,
+    [{g:'2 g',precio:10,stock:12,vending:false},{g:'5 g',precio:30,stock:7,vending:false}],'baja',
+    [R('Q. R.','Limón y lima, muy fresca.',4,2,'15 ago'),
+     R('W. T.','Cítrica de manual, ácida.',4,3,'6 ago')]),
+  P('kushmint','Kush Mint','THZ','Resina','Resina hash',PH,
+    [{g:'1 g',precio:8,stock:7,vending:false},{g:'2 g',precio:16,stock:4,vending:false}],'media',
+    [R('X. P.','Menta clara, muy fresca.',5,3,'19 ago'),
+     R('J. C.','Mentolada, con frescor largo.',4,3,'12 ago'),
+     R('N. B.','Hierbabuena y algo dulce.',5,3,'4 ago')]),
+  P('banana','Banana Z','THZ','Resina','Resina hash',PH,
+    [{g:'1 g',precio:8,stock:5,vending:false},{g:'2 g',precio:16,stock:8,vending:true}],'media',
+    [R('R. G.','Plátano dulce, muy frutal.',5,3,'18 ago'),
+     R('L. V.','Frutal y cremosa a la vez.',4,3,'11 ago')]),
+  P('nepal','Nepal Dry','FTS','Resina','Dry hash',PH,
+    [{g:'1 g',precio:8,stock:10,vending:false},{g:'2 g',precio:16,stock:6,vending:false},{g:'5 g',precio:35,stock:2,vending:false}],'alta',
+    [R('T. M.','Muy terrosa, tierra y madera. Clásica.',4,5,'17 ago'),
+     R('P. D.','Terrosa y especiada, potente.',5,5,'8 ago')]),
+  P('piatella','Piatella','CBC','Resina','Resina hash',PH,
+    [{g:'1 g',precio:8,stock:9,vending:false},{g:'2 g',precio:16,stock:5,vending:false}],'media',
+    [R('C. A.','Floral y suave, muy elegante.',5,2,'16 ago'),
+     R('S. E.','Notas florales, a lavanda.',4,3,'7 ago')]),
+  P('vaperoh','Vaper Rollz OH-10 97%','OH10','Vaper','1 ml',PH,
+    [{g:'0,5 ml',precio:20,stock:14,vending:true},{g:'1 ml',precio:30,stock:9,vending:true},{g:'2 ml',precio:35,stock:4,vending:false}],'alta',
+    [R('G. L.','Tira bien y dura mucho. Sabor dulce.',5,5,'19 ago'),
+     R('M. T.','Potente, muy potente. Dulce.',5,5,'13 ago')]),
+  P('vapergrape','Vaper Grape Soda','FTS','Vaper','1 ml, Rollz',PH,
+    [{g:'1 ml',precio:30,stock:8,vending:true}],'media',
+    [R('A. Z.','Uva clarísima, muy frutal y dulce.',5,3,'18 ago'),
+     R('D. R.','Sabe a refresco de uva. Frutal.',4,3,'9 ago')]),
+  P('prerollfts','Pre-roll FTS King Size','FTS','Pre-roll','Unidad',PH,
+    [{g:'1 ud',precio:10,stock:24,vending:true}],'media',
+    [R('E. B.','Tira suave, sabor terroso.',4,3,'17 ago')]),
+  P('prerolloh','Pre-roll OH-10','OH10','Pre-roll','Unidad',PH,
+    [{g:'1 ud',precio:10,stock:18,vending:true}],'alta',
+    [R('F. N.','Potente para ser un pre-roll.',5,5,'14 ago')])
+];
+
+const eur = n => (Number.isInteger(n) ? n + ' €' : n.toFixed(2).replace('.', ',') + ' €');
+const chipCss = (act, bgA, colA) => 'flex:none;font-size:12.5px;font-weight:' + (act?'800':'600') + ';padding:8px 15px;border-radius:999px;white-space:nowrap;' +
+  (act ? 'background:' + bgA + ';color:' + colA + ';' : 'background:#f4ead6;color:#6b6154;');
+
+class Component extends DCLogic {
+  state = {
+    lado: 'movil', vista: 'descubrir', panel: 'alta', pila: [],
+    productos: BASE, mol: null, tipo: null,
+    fichaId: null, tagSel: null, valorarId: null,
+    vEstrellas: 0, vPotencia: 0, vChips: [], vTexto: '',
+    valorados: [], pendiente: 'static', eco: '',
+    paNombre: '', paDist: '', paMol: 'THZ', paTipo: 'Resina',
+    paFilas: [{g:'1 g',precio:'8,00'},{g:'2 g',precio:'16,00'}]
+  };
+
+  ir = (v, extra) => this.setState(s => ({ vista: v, pila: [...s.pila, s.vista], ...(extra||{}) }));
+  atras = () => this.setState(s => s.pila.length ? { vista: s.pila[s.pila.length-1], pila: s.pila.slice(0,-1) } : { vista: 'descubrir' });
+  raiz = v => this.setState({ vista: v, pila: [] });
+
+  tagsDe = p => {
+    const cuenta = {};
+    p.resenas.forEach(r => {
+      const { si } = extrae(r.texto);
+      si.forEach(t => { (cuenta[t] = cuenta[t] || []).push(r); });
+    });
+    return Object.keys(cuenta).map(t => ({ tag: t, n: cuenta[t].length, resenas: cuenta[t] }))
+      .sort((a,b) => b.n - a.n);
+  };
+  publicados = p => this.tagsDe(p).filter(t => t.n >= UMBRAL);
+  visibles = p => { const pub = this.publicados(p); return pub.length ? pub : this.tagsDe(p).slice(0,3); };
+  media = (p, campo) => p.resenas.length ? (p.resenas.reduce((a,r) => a + r[campo], 0) / p.resenas.length) : 0;
+  stockTotal = p => p.sizes.reduce((a,s) => a + s.stock, 0);
+  precioMin = p => p.sizes.reduce((a,s) => Math.min(a, s.precio), Infinity);
+  nota = p => p.resenas.length ? this.media(p,'estrellas').toFixed(1).replace('.', ',') + ' ★' : '—';
+  nNotas = p => p.resenas.length === 1 ? '1 valoración' : p.resenas.length + ' valoraciones';
+  porId = id => this.state.productos.find(p => p.id === id);
+
+  filtrados = () => this.state.productos.filter(p =>
+    (!this.state.mol || p.molecula === this.state.mol) && (!this.state.tipo || p.tipo === this.state.tipo));
+
+  publicar = () => {
+    const { valorarId, vEstrellas, vPotencia, vChips, vTexto } = this.state;
+    const p = this.porId(valorarId);
+    if (!p) return;
+    const antes = this.publicados(p).map(t => t.tag);
+    const texto = (vTexto || '').trim() || (vChips.length ? 'Notas de ' + vChips.join(', ') + '.' : 'Sin comentario.');
+    const nueva = R('M. R.', texto, vEstrellas || 4, vPotencia || 3, 'hoy');
+    const productos = this.state.productos.map(x => x.id === p.id ? { ...x, resenas: [nueva, ...x.resenas] } : x);
+    const nuevoP = productos.find(x => x.id === p.id);
+    const despues = this.publicados(nuevoP).map(t => t.tag);
+    const estrenadas = despues.filter(t => !antes.includes(t));
+    this.setState(s => ({
+      productos,
+      valorados: s.valorados.includes(p.id) ? s.valorados : [...s.valorados, p.id],
+      pendiente: s.pendiente === p.id ? null : s.pendiente,
+      vEstrellas: 0, vPotencia: 0, vChips: [], vTexto: '',
+      vista: 'ficha', fichaId: p.id, pila: [],
+      eco: estrenadas.length ? 'Se ha publicado la etiqueta «' + estrenadas.join('», «') + '» en ' + p.nombre + '.' : ''
+    }));
+  };
+
+  renderVals() {
+    const s = this.state;
+    const v = s.vista;
+    const esMovil = s.lado === 'movil';
+    const f = s.fichaId ? this.porId(s.fichaId) : null;
+    const lista = this.filtrados();
+
+    const ordenados = [...lista].sort((a,b) => this.media(b,'estrellas') - this.media(a,'estrellas'));
+    const dest = ordenados[0];
+
+    const tagChip = (t, tam) => {
+      const [bg, col] = PAL[t.tag] || ['#f4ead6','#7a6a44'];
+      return 'flex:none;font-size:' + (tam||13) + 'px;font-weight:700;padding:' + (tam ? '6px 12px' : '8px 14px') + ';border-radius:999px;background:' + bg + ';color:' + col + ';';
+    };
+
+    const fila = p => ({
+      nombre: p.nombre,
+      foto: p.foto,
+      sub: p.molecula + ' ' + p.tipo.toLowerCase(),
+      notas: this.visibles(p).map(t => t.tag).join(', ') || 'sin etiquetas',
+      nota: this.nota(p), nNotas: this.nNotas(p),
+      on: () => this.ir('ficha', { fichaId: p.id })
+    });
+
+    const grupos = ['OH10','THZ','CBC','FTS','D10'].map(m => {
+      const items = s.productos.filter(p => p.molecula === m);
+      return {
+        mol: m, bg: MOLBG[m],
+        resumen: items.filter(p => p.tipo === 'Flor').length + ' flores · ' + items.filter(p => p.tipo === 'Resina').length + ' resinas',
+        items: items.map(p => ({ nombre: p.nombre, tipo: p.tipo, nota: this.nota(p), on: () => this.ir('ficha', { fichaId: p.id }) }))
+      };
+    }).filter(g => g.items.length);
+
+    const fv = f ? (() => {
+      const tags = this.visibles(f);
+      const pub = this.publicados(f);
+      const pot = this.media(f,'potencia');
+      const yaValorado = s.valorados.includes(f.id);
+      return {
+        nombre: f.nombre, foto: f.foto, molecula: f.molecula, tipo: f.tipo, detalle: f.detalle,
+        potencia: pot ? pot.toFixed(1).replace('.', ',') : '—',
+        potenciaPct: (pot / 5 * 100).toFixed(0) + '%',
+        nNotas: f.resenas.length ? 'según ' + f.resenas.length + ' clientes' : 'sin valoraciones',
+        declarada: f.declarada,
+        hayTags: tags.length > 0, sinTags: tags.length === 0,
+        tags: tags.map(t => ({ label: t.tag, n: t.n, css: tagChip(t), on: () => this.ir('etiqueta', { tagSel: t.tag }) })),
+        hayCamino: tags.length > 0 && pub.length === 0,
+        camino: 'Provisionales: se publican al llegar a ' + UMBRAL + ' clientes distintos.',
+        sizes: f.sizes.map(z => {
+          const q = parseFloat(z.g.replace(',', '.'));
+          const u = z.g.includes('ml') ? 'ml' : z.g.includes('ud') ? 'ud' : 'g';
+          return { g: z.g, precio: eur(z.precio), porGramo: q && q !== 1 ? eur(z.precio / q) + '/' + u : '' };
+        }),
+        hayResenas: f.resenas.length > 0,
+        resenas: f.resenas.slice(0,3).map(r => ({
+          texto: '«' + r.texto + '»',
+          pie: r.alias + ' · compra verificada · ' + r.fecha,
+          estrellas: '★'.repeat(r.estrellas) + '☆'.repeat(5 - r.estrellas)
+        })),
+        txtValorar: yaValorado ? 'Ya has valorado esta. Toca para verla o cambiarla.' : '¿La has probado? Escanea el QR de tu ticket y valórala.',
+        onValorar: () => this.ir('valorar', { valorarId: f.id })
+      };
+    })() : {};
+
+    const tSel = s.tagSel;
+    const ev = tSel ? (() => {
+      const [bg, col] = PAL[tSel] || ['#f4ead6','#7a6a44'];
+      const conTag = s.productos.map(p => ({ p, t: this.tagsDe(p).find(x => x.tag === tSel) })).filter(x => x.t);
+      conTag.sort((a,b) => b.t.n - a.t.n);
+      const max = conTag.length ? conTag[0].t.n : 1;
+      const aqui = f ? conTag.find(x => x.p.id === f.id) : conTag[0];
+      const frases = aqui ? aqui.t.resenas.slice(0,4) : [];
+      return {
+        label: tSel, bg, color: col,
+        barras: conTag.slice(0,5).map((x,i) => ({
+          css: 'flex:1;border-radius:6px;height:' + Math.max(14, x.t.n / max * 100) + '%;background:' + (i === 0 ? col : col + '66') + ';'
+        })),
+        resumen: aqui ? aqui.p.nombre + ' es la más «' + tSel + '» del catálogo: ' + aqui.t.n + ' menciones de ' + aqui.p.resenas.length + '.' : '',
+        frases: frases.map(r => ({ texto: '«' + r.texto + '»', alias: r.alias })),
+        hayOtras: conTag.length > 1,
+        otras: conTag.filter(x => !aqui || x.p.id !== aqui.p.id).slice(0,4).map(x => ({
+          nombre: x.p.nombre, foto: x.p.foto,
+          sub: x.p.molecula + ' ' + x.p.tipo.toLowerCase() + ' · ' + x.t.n + ' menciones',
+          nota: this.nota(x.p),
+          on: () => this.ir('ficha', { fichaId: x.p.id })
+        })),
+        pie: 'Etiqueta generada automáticamente. Cuenta también: ' + (SIN[tSel] || []).slice(0,5).join(', ') + '.'
+      };
+    })() : {};
+
+    const vp = s.valorarId ? this.porId(s.valorarId) : null;
+    const det = extrae(s.vTexto);
+    const vv = vp ? {
+      nombre: vp.nombre, foto: vp.foto, sub: vp.molecula + ' ' + vp.tipo.toLowerCase(),
+      aviso: 'Compra verificada del ticket del 12 de agosto',
+      estrellas: [1,2,3,4,5].map(n => ({ color: n <= s.vEstrellas ? '#8f3a56' : '#e0d5c0', on: () => this.setState({ vEstrellas: n }) })),
+      potencias: [1,2,3,4,5].map(n => ({
+        n, on: () => this.setState({ vPotencia: n }),
+        css: 'flex:1;text-align:center;padding:13px 0;border-radius:16px;font-size:15px;font-weight:800;' +
+          (n === s.vPotencia ? 'background:#1b1b1b;color:#fff;' : 'border:1.5px solid #d8ccb6;color:#6b6154;')
+      })),
+      chips: Object.keys(SIN).map(t => {
+        const act = s.vChips.includes(t);
+        const [bg, col] = PAL[t] || ['#f4ead6','#7a6a44'];
+        return {
+          label: t, css: chipCss(act, bg, col),
+          on: () => this.setState(st => ({ vChips: act ? st.vChips.filter(x => x !== t) : [...st.vChips, t] }))
+        };
+      }),
+      texto: s.vTexto,
+      onTexto: e => this.setState({ vTexto: e.target.value }),
+      hayDetectadas: det.si.length > 0,
+      detectadas: 'Detectado en tu texto: ' + det.si.join(', ') + '. Se sumará a las etiquetas del producto.',
+      hayNegadas: det.no.length > 0,
+      negadas: 'Has dicho que NO tiene: ' + det.no.join(', ') + '. Eso no cuenta como voto a favor.',
+      onPublicar: this.publicar
+    } : {};
+
+    const navDef = [
+      { k: 'descubrir', icono: '◈', label: 'Descubrir' },
+      { k: 'carta', icono: '◫', label: 'Carta' },
+      { k: 'probados', icono: '★', label: 'Probados' }
+    ];
+
+    const panelTabs = [
+      { k: 'alta', icono: '+', label: 'Nuevo' }, { k: 'catalogo', icono: '◫', label: 'Catálogo' },
+      { k: 'etiquetas', icono: '◈', label: 'Etiquetas' }
+    ];
+
+    const todosTags = {};
+    s.productos.forEach(p => this.tagsDe(p).forEach(t => {
+      const e = todosTags[t.tag] = todosTags[t.tag] || { n: 0, donde: [] };
+      e.n += t.n; e.donde.push(p.nombre + ' ' + t.n);
+    }));
+
+    const paTotal = s.paFilas.length ? Math.min(...s.paFilas.map(r => parseFloat(String(r.precio).replace(',', '.')) || 0)) : 0;
+
+    return {
+      esMovil: true,
+      lado: s.lado,
+      verMovil: () => this.setState({ lado: 'movil' }),
+      verPanel: () => this.setState({ lado: 'panel' }),
+      cssTabMovil: 'padding:9px 18px;border-radius:999px;font-size:13px;font-weight:800;' + (esMovil ? 'background:#1b1b1b;color:#fff;' : 'background:#f3ece0;color:#6b6154;'),
+      cssTabPanel: 'padding:9px 18px;border-radius:999px;font-size:13px;font-weight:800;' + (!esMovil ? 'background:#1b1b1b;color:#fff;' : 'background:#f3ece0;color:#6b6154;'),
+      pista: 'Las dos apps comparten datos: publica un producto en la maestra y aparece en la de cliente.',
+
+      vDescubrir: v === 'descubrir', vCarta: v === 'carta', vFicha: v === 'ficha' && !!f,
+      vEtiqueta: v === 'etiqueta' && !!tSel, vValorar: v === 'valorar' && !!vp,
+      vProbados: v === 'probados',
+
+      iconoAtras: s.pila.length ? '‹' : '◉',
+      irAtras: () => s.pila.length ? this.atras() : this.raiz('descubrir'),
+      verTicket: () => {
+        const id = s.pendiente || (s.productos.find(p => !s.valorados.includes(p.id)) || {}).id;
+        if (id) this.setState(st => ({ pendiente: id, valorarId: id, vista: 'valorar', pila: [...st.pila, st.vista] }));
+      },
+
+      chipsMol: [{ label: 'Todas', k: null }, ...['OH10','THZ','CBC','FTS','D10'].map(m => ({ label: m, k: m }))].map(c => ({
+        label: c.label, css: chipCss(s.mol === c.k, '#1b1b1b', '#fff'), on: () => this.setState({ mol: c.k })
+      })),
+      chipsTipo: [{ label: 'Todo', k: null }, ...['Flor','Resina','Vaper','Pre-roll'].map(t => ({ label: t + (t === 'Flor' ? 'es' : 's'), k: t }))].map(c => ({
+        label: c.label, css: chipCss(s.tipo === c.k, '#f9dde6', '#8f3a56'), on: () => this.setState({ tipo: c.k })
+      })),
+
+      hayDestacado: !!dest,
+      destacado: dest ? {
+        nombre: dest.nombre, foto: dest.foto,
+        sub: dest.molecula + ' ' + dest.tipo.toLowerCase() + ' · ' + dest.detalle,
+        nota: this.nota(dest), nNotas: this.nNotas(dest),
+        tags: this.visibles(dest).map(t => ({ txt: t.tag + ' ' + t.n, css: tagChip(t, 12) })),
+        on: () => this.ir('ficha', { fichaId: dest.id })
+      } : {},
+
+      tituloLista: s.mol || s.tipo ? 'Resultados' : 'Todo el catálogo',
+      nResultados: lista.length + ' de ' + s.productos.length,
+      lista: ordenados.slice(dest ? 1 : 0).map(fila),
+      listaVacia: lista.length === 0,
+
+      hayPendiente: !!s.pendiente && !!this.porId(s.pendiente),
+      pendiente: s.pendiente && this.porId(s.pendiente) ? {
+        nombre: this.porId(s.pendiente).nombre + ' 2 g',
+        on: () => this.ir('valorar', { valorarId: s.pendiente })
+      } : {},
+
+      nTotal: s.productos.length,
+      carta: grupos,
+
+      f: fv, e: ev, v: vv,
+
+      probados: [
+        ...(s.pendiente && this.porId(s.pendiente) ? [{
+          nombre: this.porId(s.pendiente).nombre, foto: this.porId(s.pendiente).foto,
+          sub: 'Comprado · sin valorar', accion: 'Valorar', bg: '#f4c3d4', color: '#1b1b1b',
+          on: () => this.ir('valorar', { valorarId: s.pendiente })
+        }] : []),
+        ...s.valorados.map(id => this.porId(id)).filter(Boolean).map(p => ({
+          nombre: p.nombre, foto: p.foto, sub: 'Valorado por ti', accion: 'Ver', bg: '#e3ecdf', color: '#3d5c42',
+          on: () => this.ir('ficha', { fichaId: p.id })
+        }))
+      ],
+
+      verNav: ['descubrir','carta','probados'].includes(v),
+      nav: navDef.map(n => ({
+        icono: n.icono, label: n.label,
+        color: v === n.k ? '#1b1b1b' : '#a89f92',
+        on: () => this.raiz(n.k)
+      })),
+
+      panelNav: panelTabs.map(t => ({
+        label: t.label, icono: t.icono, color: s.panel === t.k ? '#1b1b1b' : '#a89f92',
+        on: () => this.setState({ panel: t.k })
+      })),
+      pAlta: s.panel === 'alta', pCatalogo: s.panel === 'catalogo',
+      pEtiquetas: s.panel === 'etiquetas',
+
+      pa: {
+        nombre: s.paNombre, distribuidor: s.paDist,
+        onNombre: e => this.setState({ paNombre: e.target.value }),
+        onDistribuidor: e => this.setState({ paDist: e.target.value }),
+        moleculas: ['OH10','THZ','CBC','FTS','D10'].map(m => ({
+          label: m, css: chipCss(s.paMol === m, '#1b1b1b', '#fff'), on: () => this.setState({ paMol: m })
+        })),
+        tipos: ['Flor','Resina','Vaper','Pre-roll'].map(t => ({
+          label: t, css: chipCss(s.paTipo === t, '#e3ecdf', '#3d5c42'), on: () => this.setState({ paTipo: t })
+        })),
+        filas: s.paFilas.map((r,i) => ({
+          g: r.g, precio: r.precio, stock: r.stock,
+          onPrecio: e => this.setState(st => ({ paFilas: st.paFilas.map((x,j) => j === i ? { ...x, precio: e.target.value } : x) })),
+        })),
+        molecula: s.paMol, tipo: s.paTipo,
+        previewNombre: s.paNombre || 'Sin nombre',
+        previewSub: s.paMol + ' ' + s.paTipo.toLowerCase(),
+        previewPrecio: paTotal ? eur(paTotal) : '—',
+        hayEco: !!s.eco, eco: s.eco,
+        onPublicar: () => {
+          const nombre = (s.paNombre || '').trim();
+          if (!nombre) { this.setState({ eco: 'Ponle un nombre antes de publicar.' }); return; }
+          const id = 'n' + Date.now();
+          const sizes = s.paFilas.map(r => ({
+            g: r.g,
+            precio: parseFloat(String(r.precio).replace(',', '.')) || 0
+          }));
+          this.setState(st => ({
+            productos: [...st.productos, P(id, nombre, st.paMol, st.paTipo, 'Alta desde el panel', PH, sizes, 'media', [])],
+            eco: nombre + ' ya está en el catálogo de la app, sin etiquetas todavía.',
+            paNombre: ''
+          }));
+        }
+      },
+
+      pc: {
+        resumen: s.productos.length + ' referencias · ' + s.productos.reduce((a,p) => a + p.resenas.length, 0) + ' valoraciones',
+        onNuevo: () => this.setState({ panel: 'alta' }),
+        filas: s.productos.map(p => ({
+          nombre: p.nombre, molecula: p.molecula, tipo: p.tipo,
+          tags: this.visibles(p).map(t => t.tag + ' ' + t.n).join(' · ') || 'sin etiquetas',
+          nNotas: p.resenas.length,
+          valoracion: p.resenas.length ? this.media(p,'estrellas').toFixed(1) + ' ★' : '—'
+        }))
+      },
+
+      pe: {
+        filas: Object.keys(todosTags).sort((a,b) => todosTags[b].n - todosTags[a].n).map(t => {
+          const publicada = s.productos.some(p => this.publicados(p).some(x => x.tag === t));
+          const [bg, col] = PAL[t] || ['#f4ead6','#7a6a44'];
+          return {
+            label: t,
+            estado: publicada ? 'publicada' : 'provisional',
+            bg: publicada ? bg : '#f4ead6', color: publicada ? col : '#7a6a44',
+            donde: todosTags[t].donde.slice(0,3).join(' · '),
+            sinonimos: 'Cuenta: ' + (SIN[t] || []).join(', ')
+          };
+        })
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>

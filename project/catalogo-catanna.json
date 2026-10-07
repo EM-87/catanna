@@ -1,0 +1,35 @@
+{
+  "marca": { "nombre": "Catanna", "claim": "A CBD Dream", "web": "catannacbd.com", "instagram": "@catannaCBD", "telefono": "651853111" },
+  "avisos": ["Producto ornamental, no abrir", "No apto para consumo humano. No ingerir. No inhalar", "THC inferior al 0,2% (decisión comisión 2004/842/CES)", "Prohibida la venta a menores de 18 años", "Sólo para coleccionismo"],
+  "moleculas": ["OH10", "THZ", "CBC", "FTS", "D10"],
+  "variedades": {
+    "OH10": { "flores": ["Alien", "Amnesia", "Purple OG", "Zkittle", "Critical"], "resinas": ["Charas", "Afgano"] },
+    "THZ": { "flores": ["Northernlight", "Gorila", "Glookies", "Magic Marker"], "resinas": ["Diésel Dry", "Bubble Z", "Royal Cream", "Banana Z", "Kush Mint", "Orange Soda"] },
+    "CBC": { "flores": ["Lemon", "Cookie", "Berry"], "resinas": ["Iceolator", "Mousseux", "Piatella"] },
+    "FTS": { "flores": ["Bubblegum", "Skywalker", "Blueberry", "Alien Cookie"], "resinas": ["Nepal Dry", "Royal Hash", "Sweet Dry", "Special K", "Marshmallow", "Static", "Golden Mousse", "Blue Magic"] },
+    "D10": { "flores": ["3l / Atlas"], "resinas": ["Dry OG", "Rosinella", "Purple Storm"] }
+  },
+  "flores_carta": {
+    "small_buds": { "variedades": ["Strawberry", "Candy Gas", "Mimosa", "Northern Lights", "Tropical Runtz", "Godzilla"], "precios": { "3g": 10, "10g": 20, "50g": 60 } },
+    "indoor": { "variedades": ["Glookies", "Amnesia", "Gelonade", "Blueberry", "Wedding Cake", "Northern Lights"], "precios": { "2g": 10, "5g": 30, "10g": 50 } }
+  },
+  "resinas_carta": {
+    "variedades": ["Bubble Ice", "Super Dry CBN", "Amnesia 2.0", "Zpunch", "Piatella", "Nipon", "Zkittle Dry Hash", "Royal Cream", "Black Butter"],
+    "precios": { "1g": 8, "2g": 16, "5g": 35 }
+  },
+  "promociones_vistas": {
+    "Diésel Dry": { "tipo": "resina hash dry triple filtrado", "precios": { "1g": 7, "2g": 14, "5g": 30 }, "sin_promo_por_gramo": 10, "nota": "últimas unidades" },
+    "Zkittlez Dry": { "tipo": "resina CBD premium, dry sift 90 micras", "precios": { "1g": 8, "2g": 16, "5g": 35, "50g": 100 }, "aroma": "dulce y afrutado" },
+    "Iceolator": { "tipo": "extracción", "precios": { "1g": 10, "2g": 20, "5g": 45, "10g": 80 }, "nota": "nueva fórmula, más potente, hasta fin de existencias" },
+    "Oferta especial (holográficas)": { "productos": ["Royal Cream 5g", "Dorado 2g", "Static 2g", "Diesel Dry 5g"], "precios": { "1g": 7, "2g": 14, "5g": 30 } }
+  },
+  "vapers": {
+    "vaper_cbd": [{ "n": "Pack vaper 95% CBD + cartucho 1ml", "p": 27.9 }, { "n": "Cartucho 95% CBD", "p": 20 }, { "n": "Vaper 80% CBN 1ml", "p": 24.9 }],
+    "rollz_oh10_97": [{ "n": "0,5 ml", "p": 20 }, { "n": "1 ml", "p": 30 }, { "n": "2 ml", "p": 35 }, { "n": "Pack Rollz OH-10 97% + cartucho 1ml", "p": 40 }],
+    "premium": [{ "n": "Only Grams Superior 96% 1ml", "p": 40 }, { "n": "Iguana Smoke E8H 90% 1ml", "p": 35 }, { "n": "Iguana Smoke E8H 90% 2ml", "p": 45 }, { "n": "Iguana Smoke Sativanol 90% 1ml", "p": 35 }, { "n": "Sheesh DNT-9 2ml", "p": 50, "nuevo": true }],
+    "sabores_vistos": ["Amnesia E8H", "OG Kush", "Gorilla Glue STV", "DNT-9 Zlushiez", "Wedding Cake", "Grape Soda", "Blue Dream"]
+  },
+  "pre_rolls": [{ "n": "Pre-roll CBD", "p": 3 }, { "n": "Pre-roll FTS King Size", "p": 10 }, { "n": "Pre-roll OH-10", "p": 10 }, { "n": "Pre-roll E8H King Size", "p": 10 }, { "n": "Pre-roll STV King Size", "p": 10 }],
+  "envio": { "plazo": "24h", "gratis_desde": 30, "canal_actual": "WhatsApp / teléfono" },
+  "paleta_carteles": { "rosa": "#e8447f", "rosa_palido": "#fbe0e8", "azul_marino": "#16305c", "crema": "#fdf6e9", "verde_salvia": "#8a9a6b", "lila": "#ded9f0", "negro_logo": "#1b1b1b" }
+}

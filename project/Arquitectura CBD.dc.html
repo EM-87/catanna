@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"><style>
+doc-page:not(:defined){visibility:hidden}
+body{margin:0}
+a{color:oklch(0.5 0.14 28);text-decoration:none;border-bottom:1px solid oklch(0.5 0.14 28 / .3)}
+a:hover{color:oklch(0.4 0.14 28);border-bottom-color:oklch(0.4 0.14 28)}
+</style><script src="./doc-page.js"></script></helmet>
+<doc-page margin="0.8in">
+<div style="font-family:'Bricolage Grotesque',system-ui,sans-serif;color:oklch(0.22 0.008 60);font-size:15px;line-height:1.62;text-wrap:pretty">
+
+<div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:oklch(0.55 0.14 28)">Documento de estructura · borrador 1</div>
+<h1 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:40px;line-height:1.08;letter-spacing:-.02em;margin:10px 0 14px">App para comercio de CBD: qué hay que construir exactamente</h1>
+<p style="font-size:17px;line-height:1.55;color:oklch(0.38 0.01 60);margin:0 0 30px;max-width:34em">Cuatro piezas de software, un modelo de datos y un motor de etiquetas. Este documento define el alcance antes de dibujar una sola pantalla.</p>
+
+<hr style="border:0;border-top:1.5px solid oklch(0.22 0.008 60);margin:0 0 26px">
+
+<h2 style="font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:oklch(0.55 0.14 28);margin:0 0 12px">01 · Lo que he entendido</h2>
+<p style="margin:0 0 12px">La tienda tiene mucho catálogo y ningún criterio visible para elegir. El cliente ve treinta referencias que se parecen entre sí, no encuentra ningún eje de comparación —potencia, efecto, sabor— y termina preguntando al dependiente o comprando al azar. La tienda no quiere reducir el surtido: la variedad es lo que retiene al cliente habitual que se aburre de repetir. El problema no es tener demasiado, es que lo que hay no está descrito.</p>
+<p style="margin:0 0 12px">La segunda mitad del problema es la máquina de vending. Vende un producto con restricción de edad, así que necesita validar identidad antes de dispensar, y esas ventas ocurren fuera del mostrador: si nadie las revisa, la tienda pierde visibilidad sobre una parte de su facturación.</p>
+<p style="margin:0 0 26px">La pieza que une ambas cosas es la misma base de datos de producto. La ficha que ayuda a decidir en la tienda es la ficha que ayuda a decidir frente a la máquina, y el pedido que se recoge en la máquina sale del mismo catálogo.</p>
+
+<div style="background:oklch(0.96 0.012 60);border-left:3px solid oklch(0.55 0.14 28);padding:16px 20px;margin:0 0 30px;break-inside:avoid">
+<div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:oklch(0.5 0.02 60);margin-bottom:8px">Supuestos que he tomado</div>
+<div style="display:grid;gap:7px;font-size:14px">
+<div>Una sola tienda física, un solo punto de vending, catálogo del orden de 50–200 referencias.</div>
+<div>Mercado español: el producto se vende como artículo de colección o uso tópico, sin declaraciones de efecto terapéutico.</div>
+<div>Interfaz en español, con inglés como segundo idioma probable si hay turismo.</div>
+<div>Los clientes usan la app en el móvil; la tienda usa el panel en un portátil o tablet del mostrador.</div>
+</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:oklch(0.5 0.14 28);margin-top:12px">Corrígeme cualquiera de estos cuatro y reestructuro.</div>
+</div>
+
+<h2 style="font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:oklch(0.55 0.14 28);margin:0 0 14px">02 · Las cuatro piezas</h2>
+<p style="margin:0 0 18px">Hablas de «aplicación servidor» y «aplicación cliente». En la práctica son cuatro piezas, y conviene separarlas desde el principio porque tienen usuarios, ritmos y riesgos distintos.</p>
+
+<div style="display:grid;gap:12px;margin:0 0 30px">
+<div style="border:1px solid oklch(0.85 0.01 60);padding:16px 18px;break-inside:avoid">
+<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:oklch(0.55 0.14 28)">A</span><strong style="font-size:16px">API y base de datos</strong><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:oklch(0.55 0.02 60)">el núcleo</span></div>
+<div style="font-size:14px;color:oklch(0.35 0.01 60)">Única fuente de verdad: productos, valoraciones, tags, usuarios, verificaciones de edad, pedidos, ventas de la máquina. Todo lo demás la consume. Aquí vive también el motor de tags, que corre en segundo plano.</div>
+</div>
+<div style="border:1px solid oklch(0.85 0.01 60);padding:16px 18px;break-inside:avoid">
+<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:oklch(0.55 0.14 28)">B</span><strong style="font-size:16px">Panel de tienda</strong><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:oklch(0.55 0.02 60)">web, escritorio</span></div>
+<div style="font-size:14px;color:oklch(0.35 0.01 60)">Alta y edición de productos con fotos, distribuidor y precio. Moderación de valoraciones y de tags autogenerados. Panel de ventas de la máquina. Gestión de pedidos para recogida. Es la pieza que más se usa a diario y la que suele quedar sin diseñar.</div>
+</div>
+<div style="border:1px solid oklch(0.85 0.01 60);padding:16px 18px;break-inside:avoid">
+<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:oklch(0.55 0.14 28)">C</span><strong style="font-size:16px">App de cliente</strong><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:oklch(0.55 0.02 60)">móvil</span></div>
+<div style="font-size:14px;color:oklch(0.35 0.01 60)">Explorar el catálogo por eje (potencia, efecto, sabor), leer la ficha, valorar lo que ya ha probado, verificar la edad una vez, pedir y recoger en máquina. Empezaría como web app instalable: nada de esto necesita tienda de aplicaciones.</div>
+</div>
+<div style="border:1px solid oklch(0.85 0.01 60);padding:16px 18px;break-inside:avoid">
+<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:oklch(0.55 0.14 28)">D</span><strong style="font-size:16px">Puente con la máquina</strong><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:oklch(0.55 0.02 60)">servicio, sin interfaz</span></div>
+<div style="font-size:14px;color:oklch(0.35 0.01 60)">Un servicio pequeño y aislado que habla con el sistema de OleVending: recibe o descarga las ventas, responde a las validaciones de edad y entrega los códigos de recogida. Aislarlo importa porque es la única parte que depende de un tercero cuyo funcionamiento todavía no conocemos.</div>
+</div>
+</div>
+
+<h2 style="font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:oklch(0.55 0.14 28);margin:0 0 14px">03 · Roles</h2>
+<table style="width:100%;border-collapse:collapse;font-size:13.5px;margin:0 0 30px">
+<thead><tr style="border-bottom:1.5px solid oklch(0.22 0.008 60)">
+<th style="text-align:left;padding:8px 10px 8px 0;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:500">Rol</th>
+<th style="text-align:left;padding:8px 10px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:500">Puede</th>
+<th style="text-align:left;padding:8px 0 8px 10px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:500">No puede</th>
+</tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid oklch(0.9 0.01 60)"><td style="padding:10px 10px 10px 0;vertical-align:top"><strong>Visitante</strong></td><td style="padding:10px;vertical-align:top;color:oklch(0.35 0.01 60)">Ver catálogo, fichas y tags</td><td style="padding:10px 0 10px 10px;vertical-align:top;color:oklch(0.35 0.01 60)">Valorar, pedir, comprar en máquina</td></tr>
+<tr style="border-bottom:1px solid oklch(0.9 0.01 60)"><td style="padding:10px 10px 10px 0;vertical-align:top"><strong>Cliente registrado</strong></td><td style="padding:10px;vertical-align:top;color:oklch(0.35 0.01 60)">Valorar, guardar favoritos, ver su historial</td><td style="padding:10px 0 10px 10px;vertical-align:top;color:oklch(0.35 0.01 60)">Comprar en máquina hasta verificar edad</td></tr>
+<tr style="border-bottom:1px solid oklch(0.9 0.01 60)"><td style="padding:10px 10px 10px 0;vertical-align:top"><strong>Cliente verificado</strong></td><td style="padding:10px;vertical-align:top;color:oklch(0.35 0.01 60)">Todo lo anterior más pedir y recoger en máquina</td><td style="padding:10px 0 10px 10px;vertical-align:top;color:oklch(0.35 0.01 60)">—</td></tr>
+<tr style="border-bottom:1px solid oklch(0.9 0.01 60)"><td style="padding:10px 10px 10px 0;vertical-align:top"><strong>Dependiente</strong></td><td style="padding:10px;vertical-align:top;color:oklch(0.35 0.01 60)">Alta y edición de producto, atender pedidos, ver ventas</td><td style="padding:10px 0 10px 10px;vertical-align:top;color:oklch(0.35 0.01 60)">Borrar valoraciones, cambiar precios base, exportar datos</td></tr>
+<tr><td style="padding:10px 10px 10px 0;vertical-align:top"><strong>Responsable</strong></td><td style="padding:10px;vertical-align:top;color:oklch(0.35 0.01 60)">Todo, incluida moderación y configuración del motor de tags</td><td style="padding:10px 0 10px 10px;vertical-align:top;color:oklch(0.35 0.01 60)">—</td></tr>
+</tbody>
+</table>
+
+<h2 style="font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:oklch(0.55 0.14 28);margin:0 0 14px">04 · Modelo de datos</h2>
+<p style="margin:0 0 18px">Nueve entidades. Cada una con los campos mínimos que hacen falta para que el resto del sistema funcione; todo lo demás es añadido posterior.</p>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 12px">
+<div style="border-top:2px solid oklch(0.22 0.008 60);padding-top:10px;break-inside:avoid">
+<div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;margin-bottom:6px">Producto</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.75;color:oklch(0.38 0.01 60)">nombre · tipo · distribuidor · fotos[] · precio · formato · %CBD declarado · descripción del distribuidor · estado (activo/agotado/retirado) · disponible_en_vending</div>
+</div>
+<div style="border-top:2px solid oklch(0.22 0.008 60);padding-top:10px;break-inside:avoid">
+<div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;margin-bottom:6px">Distribuidor</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.75;color:oklch(0.38 0.01 60)">nombre · contacto · notas internas · visible_al_cliente (sí/no)</div>
+</div>
+<div style="border-top:2px solid oklch(0.22 0.008 60);padding-top:10px;break-inside:avoid">
+<div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;margin-bottom:6px">Valoración</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.75;color:oklch(0.38 0.01 60)">producto · usuario · estrellas 1–5 · potencia percibida 1–5 · texto libre · fecha · compra_verificada · estado de moderación</div>
+</div>
+<div style="border-top:2px solid oklch(0.22 0.008 60);padding-top:10px;break-inside:avoid">
+<div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;margin-bottom:6px">Tag</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.75;color:oklch(0.38 0.01 60)">etiqueta · familia (sabor/efecto/aroma/textura) · sinónimos[] · origen (auto/manual)</div>
+</div>
+<div style="border-top:2px solid oklch(0.22 0.008 60);padding-top:10px;break-inside:avoid">
+<div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;margin-bottom:6px">TagDeProducto</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.75;color:oklch(0.38 0.01 60)">producto · tag · nº de menciones · valoraciones que lo respaldan[] · confianza · publicado (sí/no) · oculto_por_tienda</div>
+</div>
+<div style="border-top:2px solid oklch(0.22 0.008 60);padding-top:10px;break-inside:avoid">
+<div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;margin-bottom:6px">Usuario</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.75;color:oklch(0.38 0.01 60)">identificador · alias público · rol · edad_verificada + fecha + método · preferencias</div>
+</div>
+<div style="border-top:2px solid oklch(0.22 0.008 60);padding-top:10px;break-inside:avoid">
+<div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;margin-bottom:6px">Pedido</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.75;color:oklch(0.38 0.01 60)">usuario · líneas[] · total · canal (tienda/vending) · código de recogida · caducidad del código · estado</div>
+</div>
+<div style="border-top:2px solid oklch(0.22 0.008 60);padding-top:10px;break-inside:avoid">
+<div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;margin-bottom:6px">VentaVending</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.75;color:oklch(0.38 0.01 60)">fecha/hora · máquina · canal físico · producto (o código sin mapear) · importe · resultado de la validación · pedido asociado</div>
+</div>
+<div style="border-top:2px solid oklch(0.22 0.008 60);padding-top:10px;break-inside:avoid">
+<div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;margin-bottom:6px">VerificaciónEdad</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.75;color:oklch(0.38 0.01 60)">usuario · método · resultado · fecha · caducidad · <em>sin guardar imagen ni número de DNI</em></div>
+</div>
+</div>
+<p style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:oklch(0.5 0.14 28);margin:0 0 30px">Nota: el producto de la máquina puede no coincidir con el del catálogo. Necesitamos una tabla puente entre canal físico de la máquina y producto, mantenida a mano desde el panel.</p>
+
+<h2 style="font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:oklch(0.55 0.14 28);margin:0 0 14px">05 · El motor de tags</h2>
+<p style="margin:0 0 18px">Es la parte diferencial de la idea y la que hay que especificar con más cuidado. El objetivo: convertir texto libre de clientes en atributos comparables sin que la tienda tenga que rellenar fichas.</p>
+
+<div style="display:grid;gap:0;margin:0 0 20px">
+<div style="display:grid;grid-template-columns:auto 1fr;gap:16px;padding:14px 0;border-top:1px solid oklch(0.88 0.01 60);break-inside:avoid">
+<div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:oklch(0.55 0.14 28);padding-top:2px">PASO 1</div>
+<div><strong style="font-size:15px">Recoger mejor desde el formulario</strong><div style="font-size:14px;color:oklch(0.35 0.01 60);margin-top:3px">Antes del texto libre, tres campos rápidos: estrellas, potencia percibida (1–5) y una fila de descriptores sugeridos que el cliente puede tocar. El texto libre es la fuente rica, pero los toques dan señal limpia desde la primera valoración.</div></div>
+</div>
+<div style="display:grid;grid-template-columns:auto 1fr;gap:16px;padding:14px 0;border-top:1px solid oklch(0.88 0.01 60);break-inside:avoid">
+<div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:oklch(0.55 0.14 28);padding-top:2px">PASO 2</div>
+<div><strong style="font-size:15px">Normalizar y extraer</strong><div style="font-size:14px;color:oklch(0.35 0.01 60);margin-top:3px">Minúsculas, sin acentos, sin plurales. Un diccionario propio de sinónimos mapea «cítrico», «citricos», «a limón», «lima» al mismo tag <code style="font-family:'JetBrains Mono',monospace;font-size:12.5px;background:oklch(0.94 0.012 60);padding:1px 5px">limón</code>. Ese diccionario se edita desde el panel: es un activo del negocio, no código.</div></div>
+</div>
+<div style="display:grid;grid-template-columns:auto 1fr;gap:16px;padding:14px 0;border-top:1px solid oklch(0.88 0.01 60);break-inside:avoid">
+<div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:oklch(0.55 0.14 28);padding-top:2px">PASO 3</div>
+<div><strong style="font-size:15px">Detectar negaciones y comparaciones</strong><div style="font-size:14px;color:oklch(0.35 0.01 60);margin-top:3px">«No sabe nada a limón» no es un voto a favor de limón. Es el fallo más habitual de estos sistemas y hay que resolverlo desde el principio, con reglas de negación o con un modelo de lenguaje que devuelva pares atributo/signo.</div></div>
+</div>
+<div style="display:grid;grid-template-columns:auto 1fr;gap:16px;padding:14px 0;border-top:1px solid oklch(0.88 0.01 60);break-inside:avoid">
+<div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:oklch(0.55 0.14 28);padding-top:2px">PASO 4</div>
+<div><strong style="font-size:15px">Umbral de publicación</strong><div style="font-size:14px;color:oklch(0.35 0.01 60);margin-top:3px">Un tag se publica con al menos <strong>4 menciones de usuarios distintos</strong> y una proporción mínima sobre el total de valoraciones del producto. Con pocas valoraciones, mejor un número absoluto bajo que un porcentaje: cinco menciones sobre seis reseñas es señal, sobre doscientas es ruido.</div></div>
+</div>
+<div style="display:grid;grid-template-columns:auto 1fr;gap:16px;padding:14px 0;border-top:1px solid oklch(0.88 0.01 60);border-bottom:1px solid oklch(0.88 0.01 60);break-inside:avoid">
+<div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:oklch(0.55 0.14 28);padding-top:2px">PASO 5</div>
+<div><strong style="font-size:15px">Mostrar con su origen</strong><div style="font-size:14px;color:oklch(0.35 0.01 60);margin-top:3px">En la ficha, cada tag lleva su número: <code style="font-family:'JetBrains Mono',monospace;font-size:12.5px;background:oklch(0.94 0.012 60);padding:1px 5px">limón · 7 clientes</code>, y al tocarlo se ven las frases que lo generaron. Eso es lo que hace creíble un tag automático, y de paso da un uso a las reseñas que nadie lee enteras.</div></div>
+</div>
+</div>
+<p style="margin:0 0 30px">La potencia se trata aparte: no es un tag, es un número. La media de potencia percibida por los clientes contra el porcentaje declarado por el distribuidor es, probablemente, el dato más útil de toda la ficha, y el que nadie más le está dando al cliente.</p>
+
+<h2 style="font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:oklch(0.55 0.14 28);margin:0 0 14px">06 · Vending y verificación de edad</h2>
+<p style="margin:0 0 14px">Aquí hay una decisión de arquitectura antes que de diseño, y depende por completo de qué expone OleVending. Tres escenarios posibles, de mejor a peor para nosotros:</p>
+<div style="display:grid;gap:10px;margin:0 0 20px">
+<div style="display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;break-inside:avoid"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:oklch(0.5 0.14 148);border:1px solid oklch(0.5 0.14 148);padding:2px 6px">API</span><div style="font-size:14px">Su sistema nos llama para validar y nos envía cada venta. Podemos hacer pedido, recogida por código y panel de ventas en tiempo real. Es el escenario completo.</div></div>
+<div style="display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;break-inside:avoid"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:oklch(0.5 0.14 28);border:1px solid oklch(0.5 0.14 28);padding:2px 6px">CSV</span><div style="font-size:14px">Solo hay exportación periódica de ventas. Tendremos panel de ventas con retraso, y la validación de edad la hace la máquina sola con su lector. El pedido con recogida queda fuera de alcance.</div></div>
+<div style="display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;break-inside:avoid"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:oklch(0.45 0.02 60);border:1px solid oklch(0.45 0.02 60);padding:2px 6px">CERRADO</span><div style="font-size:14px">No dan nada. La app queda como catálogo y guía de decisión, y las ventas de la máquina se conciliarán a mano. Sigue siendo un producto útil, pero conviene saberlo antes de construir.</div></div>
+</div>
+
+<div style="background:oklch(0.96 0.012 60);padding:18px 20px;margin:0 0 20px;break-inside:avoid">
+<div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:oklch(0.5 0.02 60);margin-bottom:10px">Qué preguntar a OleVending</div>
+<div style="display:grid;gap:6px;font-size:14px">
+<div>¿Hay API o webhooks? ¿Documentación? ¿Entorno de pruebas?</div>
+<div>La verificación de edad, ¿la hace su máquina con lector propio o esperan que la resolvamos nosotros?</div>
+<div>¿Se puede autorizar una dispensación desde fuera, con un código o QR generado por nuestra app?</div>
+<div>¿Qué campos trae cada venta y con qué retraso? ¿Identifica el producto o solo el canal físico?</div>
+<div>Cuando falla una validación de DNI, ¿queda registrada esa negativa?</div>
+<div>Quién es el responsable del tratamiento del dato del DNI: ellos, la tienda, o los dos.</div>
+</div>
+</div>
+<p style="margin:0 0 30px">Mientras no tengamos respuesta, el diseño puede avanzar entero si asumimos el escenario intermedio y dejamos el puente detrás de una interfaz propia. Lo que no haría es diseñar el flujo de pedido y recogida antes de saber si la máquina puede recibir una orden externa.</p>
+
+<h2 style="font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:oklch(0.55 0.14 28);margin:0 0 14px">07 · Mapa de pantallas</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:26px;margin:0 0 30px">
+<div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:oklch(0.5 0.02 60);border-bottom:1px solid oklch(0.22 0.008 60);padding-bottom:6px;margin-bottom:10px">App de cliente</div>
+<div style="display:grid;gap:6px;font-size:14px;line-height:1.45">
+<div>Descubrir — por eje, no por lista</div>
+<div>Filtro por tags y potencia</div>
+<div>Ficha de producto</div>
+<div>Frases detrás de un tag</div>
+<div>Valorar (3 pasos, menos de un minuto)</div>
+<div>Mis productos probados</div>
+<div>Verificar edad</div>
+<div>Pedido y código de recogida</div>
+<div>Cuenta</div>
+</div>
+</div>
+<div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:oklch(0.5 0.02 60);border-bottom:1px solid oklch(0.22 0.008 60);padding-bottom:6px;margin-bottom:10px">Panel de tienda</div>
+<div style="display:grid;gap:6px;font-size:14px;line-height:1.45">
+<div>Alta rápida de producto (foto y 4 campos)</div>
+<div>Catálogo y estados</div>
+<div>Bandeja de tags por aprobar</div>
+<div>Moderación de valoraciones</div>
+<div>Diccionario de sinónimos</div>
+<div>Ventas de la máquina</div>
+<div>Mapeo canal físico → producto</div>
+<div>Pedidos pendientes de recogida</div>
+<div>Distribuidores</div>
+</div>
+</div>
+</div>
+
+<sc-if value="{{ showRoadmap }}" hint-placeholder-val="{{ true }}">
+<h2 style="font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:oklch(0.55 0.14 28);margin:0 0 14px">08 · Por dónde empezar</h2>
+<p style="margin:0 0 16px">El orden importa porque el motor de tags no funciona sin valoraciones, y no hay valoraciones sin catálogo publicado. Construir la máquina de vending primero sería empezar por el final.</p>
+<div style="display:grid;gap:12px;margin:0 0 30px">
+<div style="display:grid;grid-template-columns:auto 1fr;gap:16px;break-inside:avoid"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;background:oklch(0.22 0.008 60);color:oklch(0.97 0.01 60);padding:3px 8px;height:fit-content">FASE 1</span><div><strong>Catálogo con criterio.</strong> <span style="color:oklch(0.35 0.01 60)">Alta de producto en el panel, fichas en la app, filtros por tipo y potencia declarada, tags manuales puestos por la tienda. Ya resuelve el problema principal sin depender de nada externo.</span></div></div>
+<div style="display:grid;grid-template-columns:auto 1fr;gap:16px;break-inside:avoid"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;background:oklch(0.22 0.008 60);color:oklch(0.97 0.01 60);padding:3px 8px;height:fit-content">FASE 2</span><div><strong>Valoraciones y tags automáticos.</strong> <span style="color:oklch(0.35 0.01 60)">Formulario de valoración, motor de extracción, bandeja de aprobación, potencia percibida en la ficha. Es la fase que da a la app una razón para volver a abrirla.</span></div></div>
+<div style="display:grid;grid-template-columns:auto 1fr;gap:16px;break-inside:avoid"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;background:oklch(0.22 0.008 60);color:oklch(0.97 0.01 60);padding:3px 8px;height:fit-content">FASE 3</span><div><strong>Visibilidad de la máquina.</strong> <span style="color:oklch(0.35 0.01 60)">Ingesta de ventas, mapeo de canales, panel de informes. Se puede hacer con CSV si no hay API.</span></div></div>
+<div style="display:grid;grid-template-columns:auto 1fr;gap:16px;break-inside:avoid"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;background:oklch(0.22 0.008 60);color:oklch(0.97 0.01 60);padding:3px 8px;height:fit-content">FASE 4</span><div><strong>Pedido y recogida en máquina.</strong> <span style="color:oklch(0.35 0.01 60)">Solo si OleVending permite autorizar una dispensación desde fuera. Bloqueada hasta tener esa respuesta.</span></div></div>
+</div>
+</sc-if>
+
+<sc-if value="{{ showLegal }}" hint-placeholder-val="{{ true }}">
+<h2 style="font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:oklch(0.55 0.14 28);margin:0 0 14px">09 · Riesgos</h2>
+<div style="display:grid;gap:11px;margin:0 0 30px;font-size:14px">
+<div style="break-inside:avoid"><strong>Arranque en frío.</strong> <span style="color:oklch(0.35 0.01 60)">Sin valoraciones no hay tags, y sin tags la app no aporta nada el primer día. Hay que sembrar: que el equipo valore el catálogo y que la tienda ponga tags manuales desde el principio.</span></div>
+<div style="break-inside:avoid"><strong>Lenguaje de efectos.</strong> <span style="color:oklch(0.35 0.01 60)">Los tags de sabor y aroma son seguros. Los de efecto los generan los clientes, no la tienda, y aun así aparecen en un escaparate comercial. Conviene decidir con criterio legal si se publican, cómo se enuncian y con qué aviso.</span></div>
+<div style="break-inside:avoid"><strong>Dato del DNI.</strong> <span style="color:oklch(0.35 0.01 60)">Guardar solo el resultado de la verificación y su fecha, nunca la imagen ni el número. Cuanto menos toque nuestro sistema, mejor.</span></div>
+<div style="break-inside:avoid"><strong>Valoraciones falsas.</strong> <span style="color:oklch(0.35 0.01 60)">Con volumen bajo, cinco reseñas coordinadas cambian una ficha. Una valoración por usuario y producto, y peso extra a la compra verificada.</span></div>
+<div style="break-inside:avoid"><strong>Dependencia del tercero.</strong> <span style="color:oklch(0.35 0.01 60)">Todo lo relacionado con la máquina puede caerse por una decisión que no controlamos. De ahí que sea la pieza D, aislada, y las fases 3 y 4, al final.</span></div>
+</div>
+</sc-if>
+
+<hr style="border:0;border-top:1.5px solid oklch(0.22 0.008 60);margin:0 0 20px">
+<div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:oklch(0.5 0.02 60);margin-bottom:12px">Siguiente paso</div>
+<p style="margin:0 0 10px;max-width:34em">Confirma o corrige los supuestos del apartado 1 y dime qué fase quieres ver dibujada primero. Con eso monto el mapa de pantallas en wireframe y, después, la app cliente como prototipo navegable.</p>
+<p style="margin:0;max-width:34em;color:oklch(0.45 0.01 60);font-size:14px">Falta también decidir la dirección visual: no la he elegido todavía porque conviene hacerlo cuando exista la primera pantalla real y no sobre un documento.</p>
+
+</div>
+</doc-page>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showRoadmap&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Secciones&quot;},&quot;showLegal&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Secciones&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      showRoadmap: this.props.showRoadmap ?? true,
+      showLegal: this.props.showLegal ?? true,
+    };
+  }
+}
+</script>
+</body>
+</html>
